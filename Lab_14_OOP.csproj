@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Lab_10_lib">
+      <HintPath>bin\Debug\net6.0\Lab_10_lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Lab_12_lib">
+      <HintPath>bin\Debug\net6.0\Lab_12_lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
