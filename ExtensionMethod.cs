@@ -17,33 +17,6 @@ namespace Lab_14_OOP
             return count;
         }
 
-        public static Product[] SortByPrice(this HashTable<MilkProduct> hashTable, Func<MilkProduct, MilkProduct, bool> selectRule)
-        {
-            Product[] products = hashTable.ToArray();
-
-            int n = products.Length;
-            Product temp;
-            for (int i = 0; i < n - 1; i++)
-            {
-                for (int j = 0; j < n - i - 1; j++)
-                {
-                    if (products[j].Price > products[j + 1].Price)
-                    {
-                        // Обмен значениями
-                        temp = products[j];
-                        products[j] = products[j + 1];
-                        products[j + 1] = temp;
-                    }
-                }
-            }
-            return products;
-        }
-
-        public static IEnumerable<MilkProduct> Sorting(this HashTable<MilkProduct> hashTable, Func<MilkProduct, double> selectRule)
-        {
-            return hashTable.OrderBy(selectRule);
-        }
-
         public static List<MilkProduct> SortBy(this HashTable<MilkProduct> hashTable, Func<MilkProduct, double> selectRule)
         {
             var productList = new List<MilkProduct>();

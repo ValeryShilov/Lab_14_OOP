@@ -48,7 +48,7 @@ namespace Lab_14_OOP
             
             MethodQueryAvr(products);
             MethodSelect(products);
-            MethodQuerySorting2(products);
+            MethodQuerySorting(products);
 
         }
 
@@ -57,10 +57,13 @@ namespace Lab_14_OOP
             for (int i = 0; i < sizeQ; i++)
             {
                 var goodsMilkDict = new Dictionary<Goods, MilkProduct>();
+                Random rnd = new();
                 for (int j = 0; j < sizeD; j++)
                 {
                     var milk = new MilkProduct();
                     milk.RandomInit();
+                    if (rnd.Next(1, 6) == 2)
+                        milk.Name = "Творог";
                     var goods = milk.BaseGoods;
                     goodsMilkDict.Add(goods, milk);
                 }
@@ -149,18 +152,20 @@ namespace Lab_14_OOP
             Console.WriteLine("С помощью LINQ");
             var cheapQueryLinq = (from dict in queue
                                   from product in dict.Values
-                                  select product).Min();
+                                  orderby product.Price descending
+                                  select product).FirstOrDefault();
             var expensiveQueryLinq = (from dict in queue
                                       from product in dict.Values
-                                      select product).Max();
+                                      orderby product.Price ascending
+                                      select product).FirstOrDefault();
             Console.Write(cheapQueryLinq);
             Console.WriteLine(" Цена: " + cheapQueryLinq.Price);
             Console.Write(expensiveQueryLinq);
             Console.WriteLine(" Цена: " + expensiveQueryLinq.Price);
 
             Console.WriteLine("С помощью методов расширений:");
-            var cheapQueryMethod = queue.SelectMany(d => d.Values).Min();
-            var expensiveQueryMethod = queue.SelectMany(d => d.Values).Max();
+            var cheapQueryMethod = queue.SelectMany(d => d.Values).OrderByDescending(p => p.Price).FirstOrDefault();
+            var expensiveQueryMethod = queue.SelectMany(d => d.Values).OrderBy(p=> p.Price).FirstOrDefault();
             Console.Write(cheapQueryLinq);
             Console.WriteLine(" Цена: " + cheapQueryMethod.Price);
             Console.Write(expensiveQueryLinq);
@@ -181,7 +186,7 @@ namespace Lab_14_OOP
                 Console.WriteLine(item);
             }
 
-            var groupMethod = queue.SelectMany(d => d.Values.GroupBy(p => p.Name).Select(g => new { Name = g.Key, Count = g.Count() }));
+            var groupMethod = queue.SelectMany(d => d.Values).GroupBy(p => p.Name).Select(g => new { Name = g.Key, Count = g.Count() });
             Console.WriteLine("С помощью методов расширений");
             foreach (var item in groupMethod)
             {
@@ -195,15 +200,6 @@ namespace Lab_14_OOP
         }
 
         public static void MethodQuerySorting(HashTable<MilkProduct> products)
-        {
-            Product[] sortedByPriceAscending = products.SortByPrice((p1, p2) => p1.Price > p2.Price);
-            foreach (var item in sortedByPriceAscending)
-            {
-                Console.WriteLine(item);
-            }
-        }
-
-        public static void MethodQuerySorting2(HashTable<MilkProduct> products)
         {
             Console.WriteLine("Сортировка по цене");
             var sorting = products.SortBy(p => p.Price);
